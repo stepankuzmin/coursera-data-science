@@ -8,14 +8,16 @@ df <- tbl_df(NEI) %>%
       summarise_each(funs(sum), Emissions) %>%  # calculate sum of emissions by year
       mutate_each(funs(. / 1000), Emissions)    # convert tons of emissions to thousands of tons
 
-png(file = "plot1.png")
+png(file = "plot1.png", width = 1280, height = 768)
 with(df, {
   plot(Emissions ~ year,
     type = "n",
+    xaxt = "n",
     xlab = "Year",
     ylab = expression("Total PM"[2.5] * " Emission (in thousands of tons)"),
     main = expression("Total PM"[2.5] * " Emission (1999 — 2008)"))
-  lines(Emissions ~ year, col = "blue", lwd = 1)
+  axis(side = 1, at = c("1999", "2002", "2005", "2008"))
+  abline(lm(Emissions ~ year), col = "blue", lwd = 3, lty = "dashed")
   points(Emissions ~ year, pch = 4, col = "red")
 })
 dev.off()

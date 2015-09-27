@@ -17,7 +17,7 @@ df <- tbl_df(NEI) %>%
       group_by(city, year) %>%                                      # group observations by city and year
       summarise_each(funs(sum), Emissions)                          # calculate sum of emissions by year
 
-png(file = "plot6.png")
+png(file = "plot6.png", width = 1280, height = 768)
 
 g <- ggplot(df, aes(x = factor(year), Emissions))
 g + geom_bar(aes(fill = city), stat = "identity") +

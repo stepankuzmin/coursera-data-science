@@ -12,7 +12,7 @@ df <- tbl_df(NEI) %>%
       group_by(year) %>%                                            # group observations by year
       summarise_each(funs(sum), Emissions)                          # calculate sum of emissions by year
 
-png(file = "plot5.png")
+png(file = "plot5.png", width = 1280, height = 768)
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_bar(aes(fill=year), stat = "identity") +

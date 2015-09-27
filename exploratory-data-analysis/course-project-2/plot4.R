@@ -13,7 +13,7 @@ df <- tbl_df(NEI) %>%
       summarise_each(funs(sum), Emissions) %>%                    # calculate sum of emissions by year
       mutate_each(funs(. / 1000), Emissions)                      # convert tons of emissions to thousands of tons
 
-png(file = "plot4.png")
+png(file = "plot4.png", width = 1280, height = 768)
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_bar(aes(fill=year), stat = "identity") +
