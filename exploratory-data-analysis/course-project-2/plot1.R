@@ -13,7 +13,7 @@ with(df, {
   plot(Emissions ~ year,
     type = "n",
     xlab = "Year",
-    ylab = expression("Total PM"[2.5] * " Emission (in thousands tons)"),
+    ylab = expression("Total PM"[2.5] * " Emission (in thousands of tons)"),
     main = expression("Total PM"[2.5] * " Emission (1999 — 2008)"))
   lines(Emissions ~ year, col = "blue", lwd = 1)
   points(Emissions ~ year, pch = 4, col = "red")
