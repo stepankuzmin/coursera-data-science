@@ -8,14 +8,14 @@ df <- tbl_df(NEI) %>%
       group_by(year) %>%                    # group observations by year
       summarise_each(funs(sum), Emissions)  # calculate sum of emissions by year
 
-png(file = "plot2.png", width = 1280, height = 768)
+png(file = "plot2.png", width = 1024, height = 768)
 with(df, {
   plot(Emissions ~ year,
     type = "n",
     xaxt = "n",
     xlab = "Year",
     ylab = expression("Total PM"[2.5] * " Emission (in tons)"),
-    main = expression("Total PM"[2.5] * " Emission in Baltimore (1999 — 2008)"))
+    main = expression("Total PM"[2.5] * " Emission in the Baltimore City, Maryland from 1999 to 2008"))
   axis(side = 1, at = c("1999", "2002", "2005", "2008"))
   abline(lm(Emissions ~ year), col = "blue", lwd = 3, lty = "dashed")
   points(Emissions ~ year, pch = 4, col = "red")

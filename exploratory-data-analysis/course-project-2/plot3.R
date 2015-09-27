@@ -10,7 +10,7 @@ df <- tbl_df(NEI) %>%
       group_by(type, year) %>%              # group observations by type and year
       summarise_each(funs(sum), Emissions)  # calculate sum of emissions by year
 
-png(file = "plot3.png", width = 1280, height = 768)
+png(file = "plot3.png", width = 1024, height = 768)
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_smooth(aes(group=1), method="lm") +
@@ -20,6 +20,6 @@ g + geom_smooth(aes(group=1), method="lm") +
     facet_wrap(~type, nrow = 2) +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +
-    labs(title = expression("Total PM"[2.5] * " Emission in Baltimore by type (1999 — 2008)"))
+    labs(title = expression("Total PM"[2.5] * " Emission in the Baltimore City, Maryland from 1999 to 2008"))
 
 dev.off()
