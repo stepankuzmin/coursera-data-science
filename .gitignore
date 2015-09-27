@@ -1,0 +1,10 @@
+*.Rhistory
+*.DS_Store
+
+r-programming/programming-assignment-1/specdata
+r-programming/programming-assignment-3/data
+getting-and-cleaning-data/course-project/tidy.txt
+getting-and-cleaning-data/course-project/UCI\ HAR\ Dataset
+getting-and-cleaning-data/course-project/means_by_subject_activity.txt
+exploratory-data-analysis/course-project-1/household_power_consumption.txt
+exploratory-data-analysis/course-project-2/*.rds
