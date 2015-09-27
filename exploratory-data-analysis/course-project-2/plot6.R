@@ -27,6 +27,6 @@ g + geom_bar(aes(fill = city), stat = "identity") +
     facet_wrap(~city) +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +
-    labs(title = expression("Total PM"[2.5] * " Emission from 1999 to 2008"))
+    labs(title = expression("Total PM"[2.5] * " Emission in Baltimore City and Los Angeles County from 1999 to 2008"))
 
 dev.off()

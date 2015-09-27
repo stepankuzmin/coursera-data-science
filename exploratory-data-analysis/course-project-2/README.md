@@ -30,14 +30,14 @@ df <- tbl_df(NEI) %>%
       summarise_each(funs(sum), Emissions) %>%  # calculate sum of emissions by year
       mutate_each(funs(. / 1000), Emissions)    # convert tons of emissions to thousands of tons
 
-png(file = "plot1.png", width = 1280, height = 768)
+png(file = "plot1.png", width = 1024, height = 768)
 with(df, {
   plot(Emissions ~ year,
     type = "n",
     xaxt = "n",
     xlab = "Year",
     ylab = expression("Total PM"[2.5] * " Emission (in thousands of tons)"),
-    main = expression("Total PM"[2.5] * " Emission (1999 — 2008)"))
+    main = expression("Total PM"[2.5] * " Emission in the United States from 1999 to 2008"))
   axis(side = 1, at = c("1999", "2002", "2005", "2008"))
   abline(lm(Emissions ~ year), col = "blue", lwd = 3, lty = "dashed")
   points(Emissions ~ year, pch = 4, col = "red")
@@ -60,14 +60,14 @@ df <- tbl_df(NEI) %>%
       group_by(year) %>%                    # group observations by year
       summarise_each(funs(sum), Emissions)  # calculate sum of emissions by year
 
-png(file = "plot2.png", width = 1280, height = 768)
+png(file = "plot2.png", width = 1024, height = 768)
 with(df, {
   plot(Emissions ~ year,
     type = "n",
     xaxt = "n",
     xlab = "Year",
     ylab = expression("Total PM"[2.5] * " Emission (in tons)"),
-    main = expression("Total PM"[2.5] * " Emission in Baltimore (1999 — 2008)"))
+    main = expression("Total PM"[2.5] * " Emission in the Baltimore City, Maryland from 1999 to 2008"))
   axis(side = 1, at = c("1999", "2002", "2005", "2008"))
   abline(lm(Emissions ~ year), col = "blue", lwd = 3, lty = "dashed")
   points(Emissions ~ year, pch = 4, col = "red")
@@ -92,7 +92,7 @@ df <- tbl_df(NEI) %>%
       group_by(type, year) %>%              # group observations by type and year
       summarise_each(funs(sum), Emissions)  # calculate sum of emissions by year
 
-png(file = "plot3.png", width = 1280, height = 768)
+png(file = "plot3.png", width = 1024, height = 768)
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_smooth(aes(group=1), method="lm") +
@@ -102,7 +102,7 @@ g + geom_smooth(aes(group=1), method="lm") +
     facet_wrap(~type, nrow = 2) +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +
-    labs(title = expression("Total PM"[2.5] * " Emission in Baltimore by type (1999 — 2008)"))
+    labs(title = expression("Total PM"[2.5] * " Emission in the Baltimore City, Maryland from 1999 to 2008"))
 
 dev.off()
 ```
@@ -127,7 +127,7 @@ df <- tbl_df(NEI) %>%
       summarise_each(funs(sum), Emissions) %>%                    # calculate sum of emissions by year
       mutate_each(funs(. / 1000), Emissions)                      # convert tons of emissions to thousands of tons
 
-png(file = "plot4.png", width = 1280, height = 768)
+png(file = "plot4.png", width = 1024, height = 768)
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_bar(aes(fill=year), stat = "identity") +
@@ -135,7 +135,7 @@ g + geom_bar(aes(fill=year), stat = "identity") +
     theme_bw() +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in thousands of tons)")) +
-    labs(title = expression("Coal combustion-related PM"[2.5] * " Emission (1999 — 2008)"))
+    labs(title = expression("Coal combustion-related PM"[2.5] * " Emission in the United States from 1999 to 2008"))
 
 dev.off()
 ```
@@ -159,7 +159,7 @@ df <- tbl_df(NEI) %>%
       group_by(year) %>%                                            # group observations by year
       summarise_each(funs(sum), Emissions)                          # calculate sum of emissions by year
 
-png(file = "plot5.png", width = 1280, height = 768)
+png(file = "plot5.png", width = 1024, height = 768)
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_bar(aes(fill=year), stat = "identity") +
@@ -167,7 +167,7 @@ g + geom_bar(aes(fill=year), stat = "identity") +
     theme_bw() +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +
-    labs(title = expression("Motor vehicle PM"[2.5] * " Emission in Baltimore (1999 — 2008)"))
+    labs(title = expression("Motor vehicle PM"[2.5] * " Emission in the Baltimore City, Maryland from 1999 to 2008"))
 
 dev.off()
 ```
@@ -196,7 +196,7 @@ df <- tbl_df(NEI) %>%
       group_by(city, year) %>%                                      # group observations by city and year
       summarise_each(funs(sum), Emissions)                          # calculate sum of emissions by year
 
-png(file = "plot6.png", width = 1280, height = 768)
+png(file = "plot6.png", width = 1024, height = 768)
 
 g <- ggplot(df, aes(x = factor(year), Emissions))
 g + geom_bar(aes(fill = city), stat = "identity") +
@@ -206,7 +206,7 @@ g + geom_bar(aes(fill = city), stat = "identity") +
     facet_wrap(~city) +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +
-    labs(title = expression("Total PM"[2.5] * " Emission (1999 — 2008)"))
+    labs(title = expression("Total PM"[2.5] * " Emission in Baltimore City and Los Angeles County from 1999 to 2008"))
 
 dev.off()
 ```
