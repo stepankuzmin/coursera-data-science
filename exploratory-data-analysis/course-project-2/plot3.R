@@ -1,5 +1,5 @@
-# Of the four types of sources indicated by the type, which of these four
-# sources have seen decreases in emissions from 1999–2008 for Baltimore City?
+# Which of four sources have seen decreases in emissions from 1999–2008 for
+# Baltimore City? Which have seen increases in emissions from 1999–2008?
 library(dplyr)
 library(ggplot2)
 
@@ -13,12 +13,13 @@ df <- tbl_df(NEI) %>%
 png(file = "plot3.png")
 
 g <- ggplot(df, aes(x=factor(year), Emissions))
-g + geom_bar(aes(fill=year), stat = "identity") +
-    guides(fill=FALSE) +
+g + geom_smooth(aes(group=1), method="lm") +
+    geom_point(aes(col=type)) +
     theme_bw() +
+    theme(legend.position = "none") +
     facet_wrap(~type, nrow = 2) +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +
-    labs(title = expression("Total PM"[2.5] * " Emission in Baltimore (1999 — 2008)"))
+    labs(title = expression("Total PM"[2.5] * " Emission in Baltimore by type (1999 — 2008)"))
 
 dev.off()
