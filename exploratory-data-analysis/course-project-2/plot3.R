@@ -12,10 +12,10 @@ df <- tbl_df(NEI) %>%
 
 png(file = "plot3.png")
 
-g <- ggplot(df, aes(year, Emissions))
-g + geom_line(col = "blue", lwd = 1) +
-    geom_point(pch = 4, col = "red", size = 4) +
-    # geom_smooth(method = "lm") +
+g <- ggplot(df, aes(x=factor(year), Emissions))
+g + geom_bar(aes(fill=year), stat = "identity") +
+    guides(fill=FALSE) +
+    theme_bw() +
     facet_wrap(~type, nrow = 2) +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in tons)")) +

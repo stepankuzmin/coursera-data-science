@@ -18,6 +18,7 @@ png(file = "plot4.png")
 g <- ggplot(df, aes(x=factor(year), Emissions))
 g + geom_bar(aes(fill=year), stat = "identity") +
     guides(fill=FALSE) +
+    theme_bw() +
     labs(x = "Year") +
     labs(y = expression("Total PM"[2.5] * " Emission (in thousands tons)")) +
     labs(title = expression("Coal combustion-related PM"[2.5] * " Emission (1999 — 2008)"))
