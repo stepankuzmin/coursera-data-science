@@ -1,0 +1,135 @@
+---
+title: "Most harmful natural events across the United States"
+author: "Stepan Kuzmin"
+date: "Feb 14, 2016"
+output: html_document
+---
+
+## 1. Synopsis
+
+Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.
+
+This report provides the result of exploring the [NOAA Storm Database](https://www.ncdc.noaa.gov/stormevents/) and answers to following questions:
+
+1. Across the United States, which types of events are most harmful with respect to population health?
+2. Across the United States, which types of events have the greatest economic consequences?
+
+## 2. Getting the data
+
+```{r cache=TRUE}
+download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2", "StormData.csv.bz2")
+data <- read.csv("StormData.csv.bz2", na.strings = c("NA"))
+```
+
+```{r}
+colnames(data)
+dim(data)
+```
+
+## 3. Data processing
+
+```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+Calculate numbers of fatalities and injuries grouped by natural event types
+
+```{r cache=TRUE}
+fatalities_and_injuries_by_type <- data %>%
+                                   group_by(EVTYPE) %>%
+                                   summarise_each(funs(sum), FATALITIES, INJURIES) %>%
+                                   arrange(desc(FATALITIES), desc(INJURIES))
+```
+
+Define `calculateDamage` transformation function. This function calculates damage, passed in the first argument, applying exponent, passed as the second argument.
+
+Exponents is equivalent to
+
+* `K`, `k` is kilo
+* `M`, `m` is millions
+* `B`, `b` is billions
+
+```{r}
+calculateDamage <- function(dmg, exp) {
+  switch(as.character(exp),
+         "K" = dmg * 1e+03,
+         "k" = dmg * 1e+03,
+         "M" = dmg * 1e+06,
+         "m" = dmg * 1e+06,
+         "B" = dmg * 1e+09,
+         "b" = dmg * 1e+09,
+         dmg
+  )
+}
+```
+
+Calculate property damage and core amount of damage for property by natural event types using previously defined transformation function
+
+```{r cache=TRUE}
+propdmg_and_cropdmg_by_type <- data %>%
+                               rowwise() %>%
+                               mutate(
+                                 PROPDMG = calculateDamage(PROPDMG, PROPDMGEXP),
+                                 CROPDMG = calculateDamage(CROPDMG, CROPDMGEXP)) %>%
+                               ungroup %>%
+                               group_by(EVTYPE) %>%
+                               summarise_each(funs(sum), PROPDMG, CROPDMG) %>%
+                               arrange(desc(PROPDMG), desc(CROPDMG))
+```
+
+## 4. Results
+
+### 4.1 Most harmful types of events with respect to population health
+
+```{r}
+most_harmful_to_people = head(fatalities_and_injuries_by_type, 10)
+most_harmful_to_people
+```
+
+The top two events that caused injuries are **tornado** and **excessive heat**, but the number of injuries caused by tornado is significantly higher than the number of injuried caused by other events.
+
+Below are the charts showing the results
+
+```{r fig.width=14}
+ggplot(most_harmful_to_people, aes(x = reorder(EVTYPE, FATALITIES), y = FATALITIES)) +
+  geom_bar(stat = "identity") +
+  ggtitle("10 natural events cause most fatalities") + 
+  ylab("FATALITIES") +
+  theme(axis.title.x = element_blank())
+```
+
+```{r fig.width=14}
+ggplot(most_harmful_to_people) + aes(x = reorder(EVTYPE, INJURIES), y = INJURIES) +
+  geom_bar(stat = "identity") +
+  ggtitle("10 natural events cause most people injuries") + 
+  ylab("INJURIES") +
+  theme(axis.title.x = element_blank())
+```
+
+### 4.2 Most harmful types of events with respect to economic consequences
+
+```{r}
+most_harmful_to_economic = head(propdmg_and_cropdmg_by_type, 10)
+most_harmful_to_economic
+```
+
+The top two events that leads most economic consequences are **flood** and **hurricane/typhoon**, but the number of damage caused by flood is significantly higher than the damage caused by other events.
+
+Below are the charts showing the results
+
+```{r fig.width=14}
+ggplot(most_harmful_to_economic, aes(x = reorder(EVTYPE, PROPDMG), y = PROPDMG)) +
+  geom_bar(stat = "identity") +
+  ggtitle("10 natural events cause most property damage") + 
+  ylab("Property damage") +
+  theme(axis.title.x = element_blank())
+```
+
+```{r fig.width=14}
+ggplot(most_harmful_to_economic) + aes(x = reorder(EVTYPE, CROPDMG), y = CROPDMG) +
+  geom_bar(stat = "identity") +
+  ggtitle("10 natural events cause most core amount of damage for property") + 
+  ylab("Core amount of damage for property") +
+  theme(axis.title.x = element_blank())
+```
